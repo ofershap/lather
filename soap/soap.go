@@ -67,8 +67,8 @@ func (f *Fault) Error() string {
 }
 
 type envelopeOut struct {
-	XMLName xml.Name `xml:"soap:Envelope"`
-	EnvNS   string   `xml:"xmlns:soap,attr"`
+	XMLName xml.Name   `xml:"soap:Envelope"`
+	EnvNS   string     `xml:"xmlns:soap,attr"`
 	Header  *headerOut `xml:"soap:Header"`
 	Body    bodyOut    `xml:"soap:Body"`
 }
@@ -86,8 +86,8 @@ type envelopeIn struct {
 		Inner []byte `xml:",innerxml"`
 	}
 	Body struct {
-		Fault  *faultIn `xml:"Fault"`
-		Inner  []byte   `xml:",innerxml"`
+		Fault *faultIn `xml:"Fault"`
+		Inner []byte   `xml:",innerxml"`
 	}
 }
 
@@ -154,7 +154,7 @@ func (c *Client) Call(ctx context.Context, action string, request, response any)
 	if err != nil {
 		return fmt.Errorf("soap: post: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	max := c.MaxResponseBytes
 	if max == 0 {
@@ -200,9 +200,9 @@ func (t *UsernameToken) xml() string {
 	b.WriteString(time.Now().UTC().Format("2006-01-02T15:04:05Z"))
 	b.WriteString(`</wsu:Created></wsu:Timestamp>`)
 	b.WriteString(`<wsse:UsernameToken><wsse:Username>`)
-	xml.EscapeText(&b, []byte(t.Username))
+	_ = xml.EscapeText(&b, []byte(t.Username))
 	b.WriteString(`</wsse:Username><wsse:Password Type="PasswordText">`)
-	xml.EscapeText(&b, []byte(t.Password))
+	_ = xml.EscapeText(&b, []byte(t.Password))
 	b.WriteString(`</wsse:Password></wsse:UsernameToken></wsse:Security>`)
 	return b.String()
 }

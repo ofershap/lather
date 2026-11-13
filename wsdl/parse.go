@@ -48,13 +48,13 @@ type wsdlImport struct {
 }
 
 type xsSchema struct {
-	TargetNS  string          `xml:"targetNamespace,attr"`
-	ElemForm  string          `xml:"elementFormDefault,attr"`
-	Imports   []xsImport      `xml:"import"`
-	Includes  []xsImport      `xml:"include"`
-	Elements  []xsElement     `xml:"element"`
-	Complex   []xsComplexType `xml:"complexType"`
-	Simple    []xsSimpleType  `xml:"simpleType"`
+	TargetNS string          `xml:"targetNamespace,attr"`
+	ElemForm string          `xml:"elementFormDefault,attr"`
+	Imports  []xsImport      `xml:"import"`
+	Includes []xsImport      `xml:"include"`
+	Elements []xsElement     `xml:"element"`
+	Complex  []xsComplexType `xml:"complexType"`
+	Simple   []xsSimpleType  `xml:"simpleType"`
 }
 
 type xsImport struct {
@@ -63,27 +63,27 @@ type xsImport struct {
 }
 
 type xsElement struct {
-	Name      string         `xml:"name,attr"`
-	Ref       string         `xml:"ref,attr"`
-	Type      string         `xml:"type,attr"`
-	Min       string         `xml:"minOccurs,attr"`
-	Max       string         `xml:"maxOccurs,attr"`
-	Nillable  string         `xml:"nillable,attr"`
-	Complex   *xsComplexType `xml:"complexType"`
-	Simple    *xsSimpleType  `xml:"simpleType"`
+	Name     string         `xml:"name,attr"`
+	Ref      string         `xml:"ref,attr"`
+	Type     string         `xml:"type,attr"`
+	Min      string         `xml:"minOccurs,attr"`
+	Max      string         `xml:"maxOccurs,attr"`
+	Nillable string         `xml:"nillable,attr"`
+	Complex  *xsComplexType `xml:"complexType"`
+	Simple   *xsSimpleType  `xml:"simpleType"`
 }
 
 type xsComplexType struct {
-	Name          string             `xml:"name,attr"`
-	Doc           string             `xml:"annotation>documentation"`
-	Sequence      *xsCompositor      `xml:"sequence"`
-	Choice        *xsCompositor      `xml:"choice"`
-	All           *xsCompositor      `xml:"all"`
-	Attributes    []xsAttribute      `xml:"attribute"`
-	ExtContent    *xsExtContent      `xml:"complexContent>extension"`
-	ResContent    *xsExtContent      `xml:"complexContent>restriction"`
-	SimpleExt     *xsSimpleExt       `xml:"simpleContent>extension"`
-	SimpleRes     *xsSimpleExt       `xml:"simpleContent>restriction"`
+	Name       string        `xml:"name,attr"`
+	Doc        string        `xml:"annotation>documentation"`
+	Sequence   *xsCompositor `xml:"sequence"`
+	Choice     *xsCompositor `xml:"choice"`
+	All        *xsCompositor `xml:"all"`
+	Attributes []xsAttribute `xml:"attribute"`
+	ExtContent *xsExtContent `xml:"complexContent>extension"`
+	ResContent *xsExtContent `xml:"complexContent>restriction"`
+	SimpleExt  *xsSimpleExt  `xml:"simpleContent>extension"`
+	SimpleRes  *xsSimpleExt  `xml:"simpleContent>restriction"`
 }
 
 type xsExtContent struct {
@@ -115,14 +115,14 @@ type xsAttribute struct {
 }
 
 type xsSimpleType struct {
-	Name        string    `xml:"name,attr"`
-	Restriction xsRestr   `xml:"restriction"`
-	List        xsList    `xml:"list"`
+	Name        string  `xml:"name,attr"`
+	Restriction xsRestr `xml:"restriction"`
+	List        xsList  `xml:"list"`
 }
 
 type xsRestr struct {
-	Base  string     `xml:"base,attr"`
-	Enums []xsEnum   `xml:"enumeration"`
+	Base  string   `xml:"base,attr"`
+	Enums []xsEnum `xml:"enumeration"`
 }
 
 type xsEnum struct {
@@ -145,15 +145,15 @@ type wsdlPart struct {
 }
 
 type wsdlPort struct {
-	Name string    `xml:"name,attr"`
-	Ops  []wsdlOp  `xml:"operation"`
+	Name string   `xml:"name,attr"`
+	Ops  []wsdlOp `xml:"operation"`
 }
 
 type wsdlOp struct {
-	Name  string     `xml:"name,attr"`
-	In    wsdlOpMsg  `xml:"input"`
-	Out   wsdlOpMsg  `xml:"output"`
-	Fault wsdlOpMsg  `xml:"fault"`
+	Name  string    `xml:"name,attr"`
+	In    wsdlOpMsg `xml:"input"`
+	Out   wsdlOpMsg `xml:"output"`
+	Fault wsdlOpMsg `xml:"fault"`
 }
 
 type wsdlOpMsg struct {
@@ -161,10 +161,10 @@ type wsdlOpMsg struct {
 }
 
 type wsdlBinding struct {
-	Name    string          `xml:"name,attr"`
-	Type    string          `xml:"type,attr"`
-	SOAP    []soapBinding   `xml:"binding"`
-	Ops     []wsdlBindingOp `xml:"operation"`
+	Name string          `xml:"name,attr"`
+	Type string          `xml:"type,attr"`
+	SOAP []soapBinding   `xml:"binding"`
+	Ops  []wsdlBindingOp `xml:"operation"`
 }
 
 type soapBinding struct {
@@ -194,8 +194,8 @@ type soapOp struct {
 }
 
 type wsdlService struct {
-	Name  string          `xml:"name,attr"`
-	Ports []wsdlServPort  `xml:"port"`
+	Name  string         `xml:"name,attr"`
+	Ports []wsdlServPort `xml:"port"`
 }
 
 type wsdlServPort struct {
@@ -229,7 +229,7 @@ func build(root *wsdlDefinitions) (*Definitions, error) {
 	for _, m := range root.Messages {
 		msg := &Message{Name: m.Name}
 		for _, p := range m.Parts {
-			msg.Parts = append(msg.Parts, MessagePart{Name: p.Name, Element: p.Element, Type: p.Type})
+			msg.Parts = append(msg.Parts, MessagePart(p))
 		}
 		d.Messages[msg.Name] = msg
 	}

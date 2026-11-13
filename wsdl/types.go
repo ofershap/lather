@@ -9,24 +9,24 @@ package wsdl
 
 // Definitions is the root of a parsed WSDL document.
 type Definitions struct {
-	Name       string
-	TargetNS   string
-	Schemas    []*Schema
-	Messages   map[string]*Message
-	PortTypes  map[string]*PortType
-	Bindings   map[string]*Binding
-	Services   map[string]*Service
-	Imports    []string // unresolved import locations (informational)
+	Name      string
+	TargetNS  string
+	Schemas   []*Schema
+	Messages  map[string]*Message
+	PortTypes map[string]*PortType
+	Bindings  map[string]*Binding
+	Services  map[string]*Service
+	Imports   []string // unresolved import locations (informational)
 }
 
 // Schema is one xs:schema block.
 type Schema struct {
-	TargetNS   string
-	ElemForm   string // elementFormDefault: "qualified" or "" (unqualified)
-	Elements   map[string]*Element
-	Types      map[string]*ComplexType
-	Simple     map[string]*SimpleType
-	Imports    []SchemaImport
+	TargetNS string
+	ElemForm string // elementFormDefault: "qualified" or "" (unqualified)
+	Elements map[string]*Element
+	Types    map[string]*ComplexType
+	Simple   map[string]*SimpleType
+	Imports  []SchemaImport
 }
 
 // SchemaImport records an xs:import or xs:include.

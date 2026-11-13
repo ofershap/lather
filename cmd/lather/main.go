@@ -43,7 +43,7 @@ func main() {
 		if err != nil {
 			fatal("fetch WSDL: ", err)
 		}
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 		if resp.StatusCode != 200 {
 			fatal("", fmt.Errorf("fetch WSDL: HTTP %d", resp.StatusCode))
 		}
@@ -53,7 +53,7 @@ func main() {
 		if err != nil {
 			fatal("open: ", err)
 		}
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 		r = f
 	}
 

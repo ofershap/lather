@@ -509,7 +509,7 @@ func exportName(s string) string {
 func sanitizeIdent(s string) string {
 	var out []rune
 	for i, r := range s {
-		if !unicode.IsLetter(r) && !(unicode.IsDigit(r) && i > 0) && r != '_' {
+		if !unicode.IsLetter(r) && (!unicode.IsDigit(r) || i == 0) && r != '_' {
 			continue
 		}
 		out = append(out, unicode.ToLower(r))

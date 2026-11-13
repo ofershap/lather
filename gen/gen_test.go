@@ -108,7 +108,7 @@ func TestGeneratedRoundTripNoDataLoss(t *testing.T) {
 	}
 	dir := t.TempDir()
 	writeTestModule(t, dir)
-	os.WriteFile(filepath.Join(dir, "genchk.go"), code, 0o644)
+	_ = os.WriteFile(filepath.Join(dir, "genchk.go"), code, 0o644)
 	testSrc := `package genchk
 
 import (
@@ -134,7 +134,7 @@ func TestNoLoss(t *testing.T) {
 	}
 }
 `
-	os.WriteFile(filepath.Join(dir, "genchk_test.go"), []byte(testSrc), 0o644)
+	_ = os.WriteFile(filepath.Join(dir, "genchk_test.go"), []byte(testSrc), 0o644)
 	tidy := exec.Command("go", "mod", "tidy")
 	tidy.Dir = dir
 	if out, err := tidy.CombinedOutput(); err != nil {

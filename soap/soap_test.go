@@ -19,8 +19,8 @@ type addReq struct {
 }
 
 type addResp struct {
-	XMLName    xml.Name `xml:"AddResponse"`
-	AddResult  int      `xml:"AddResult"`
+	XMLName   xml.Name `xml:"AddResponse"`
+	AddResult int      `xml:"AddResult"`
 }
 
 func server(t *testing.T, handler func(body []byte) string) (*httptest.Server, *[]byte) {
@@ -30,7 +30,7 @@ func server(t *testing.T, handler func(body []byte) string) (*httptest.Server, *
 		b, _ := io.ReadAll(r.Body)
 		got = b
 		w.Header().Set("Content-Type", "text/xml")
-		io.WriteString(w, handler(b))
+		_, _ = io.WriteString(w, handler(b))
 	}))
 	t.Cleanup(srv.Close)
 	return srv, &got
@@ -48,7 +48,7 @@ func TestCallRoundTrip(t *testing.T) {
 	if out.AddResult != 42 {
 		t.Fatalf("got %d", out.AddResult)
 	}
-	if !strings.Contains(string(*got), "<SOAPAction>" ) && !strings.Contains(string(*got), "<intA>40</intA>") {
+	if !strings.Contains(string(*got), "<SOAPAction>") && !strings.Contains(string(*got), "<intA>40</intA>") {
 		t.Fatalf("request payload missing: %s", *got)
 	}
 }
@@ -101,7 +101,7 @@ func TestSOAP12ContentType(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ct = r.Header.Get("Content-Type")
 		action = r.Header.Get("SOAPAction")
-		io.WriteString(w, `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Body><AddResponse><AddResult>1</AddResult></AddResponse></soap:Body></soap:Envelope>`)
+		_, _ = io.WriteString(w, `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Body><AddResponse><AddResult>1</AddResult></AddResponse></soap:Body></soap:Envelope>`)
 	}))
 	defer srv.Close()
 	c := &soap.Client{Endpoint: srv.URL, Version: "1.2"}
