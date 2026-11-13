@@ -1,0 +1,21 @@
+# lather
+
+> WSDL 1.1 toolkit for Go: occurrence-aware parser, code generator and SOAP
+> 1.1/1.2 client runtime (github.com/ofershap/lather, stdlib only).
+> Repeating elements - including members of a repeating xs:choice - generate
+> as slices, fixing the silent data loss of hooklift/gowsdl#264. Namespace
+> collisions get deterministic suffixes; message roots are namespace-
+> qualified for elementFormDefault="qualified". Scope limits: no WSDL 2.0,
+> no xs:import/xs:include resolution, no rpc/encoded, WS-Security is
+> UsernameToken only (no signing).
+
+## Usage
+
+- CLI: lather -p billing 'https://vendor/Service.asmx?WSDL' writes billing/billing.go (-o file, -d dir, -i skip TLS verify).
+- Library: wsdl.Parse(r) -> gen.Generate(def, gen.Options{Package: "x"}) -> gofmt-clean source; soap.Client{Endpoint, Version}.Call(ctx, action, req, &resp).
+- Live integration test is opt-in: LATHER_LIVE=1 go test ./soap/ -run TestLive.
+
+## Docs
+
+- [README](https://github.com/ofershap/lather#readme): install, scope, verified corpus, Q&A
+- [pkg.go.dev](https://pkg.go.dev/github.com/ofershap/lather): library API
