@@ -4,7 +4,7 @@
 
 **Your Go struct kept one item. The XML had three.**
 
-The WSDL said `choice` with `maxOccurs="unbounded"`. The generator gave you single pointer fields, `encoding/xml` overwrote each element with the next, and your program silently kept only the last one. That is [hooklift/gowsdl#264](https://github.com/hooklift/gowsdl/issues/264), filed against the tool most Go teams reach for when a vendor hands them a WSDL - one of 90+ open issues on a generator last touched in 2024.
+The WSDL said `choice` with `maxOccurs="unbounded"`. The generator gave you single pointer fields, `encoding/xml` overwrote each element with the next, and your program silently kept only the last one. That is [hooklift/gowsdl#264](https://github.com/hooklift/gowsdl/issues/264), and lather's regression test reproduces it exactly before proving the fix.
 
 lather is a WSDL 1.1 toolkit for Go that gets collections right: occurrence bounds survive parsing, and repeated elements - including members of a repeating `choice` - generate as **slices**. Nothing is dropped on the floor.
 
