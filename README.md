@@ -43,7 +43,7 @@ err = client.Call(ctx, action, req, &resp)      // or use the generated typed cl
 
 - **Parses WSDL 1.1** into an occurrence-aware model: types, messages, portTypes, bindings (SOAP 1.1 and 1.2), services and endpoints. `DOCTYPE`/DTD is refused outright.
 - **Generates compilable Go**: structs with `xml` tags, a typed client per portType with the SOAPAction and endpoint taken from the binding, gofmt-clean output.
-- **Collections are correct.** `maxOccurs` > 1 or `unbounded` generates slices - including every member of an enclosing repeating `choice`, the exact shape that loses data in hooklift/gowsdl#264. A regression test proves the round trip keeps all items.
+- **Collections are correct.** `maxOccurs` > 1 or `unbounded` generates slices - including every member of an enclosing repeating `choice`, the exact shape that loses data in [hooklift/gowsdl](https://github.com/hooklift/gowsdl)#264. A regression test proves the round trip keeps all items.
 - **Namespace collisions are explicit.** Two types with the same local name in different namespaces get a deterministic suffix instead of one silently redefining the other.
 - **Message roots are namespace-qualified** when the schema says `elementFormDefault="qualified"`, so strict servers accept the request.
 - **Unknown or unresolved type references** degrade to `XSDAny`, which preserves the raw XML instead of failing or fabricating a type.
